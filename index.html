@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>صرح الغذاء - المتجر الرقمي</title>
+<style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; text-align: center; margin: 0; padding: 15px; }
+    .header { background: #2c3e50; color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
+    .category { color: #e67e22; font-size: 22px; margin-top: 25px; border-bottom: 2px solid #e67e22; display: inline-block; }
+    .card { background: white; padding: 15px; margin: 10px auto; width: 90%; max-width: 450px; border-radius: 12px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+    .btn { display: block; background: #25D366; color: white; padding: 18px; margin: 30px auto; width: 85%; max-width: 320px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 18px; }
+</style>
+<script>
+    // نظام الـ 30 يوم (تاريخ التفعيل اليوم 2026-07-14)
+    window.onload = function() {
+        var startDate = new Date("2026-07-14");
+        var today = new Date();
+        if ((today - startDate) / (1000 * 60 * 60 * 24) > 30) {
+            document.body.innerHTML = "<h1 style='padding:50px;'>عذراً، انتهى اشتراك المتجر. يرجى التواصل مع الإدارة للتجديد.</h1>";
+        }
+    };
+</script>
+</head>
+<body>
+    <div class="header"><h1>🛒 صرح الغذاء</h1></div>
+    
+    <div class="category">المشروبات</div>
+    <div class="card"><span>🥛 حليب طازج</span> <span>4 ر.س</span></div>
+    <div class="card"><span>🍷 فيمتو</span> <span>5 ر.س</span></div>
+    <div class="card"><span>🧊 آيس تي</span> <span>4 ر.س</span></div>
+    <div class="card"><span>🥤 عصير برتقال</span> <span>6 ر.س</span></div>
+    <div class="card"><span>💧 مياه معدنية</span> <span>1 ر.س</span></div>
+
+    <div class="category">السناكات والحلويات</div>
+    <div class="card"><span>🍫 سنيكرز</span> <span>3 ر.س</span></div>
+    <div class="card"><span>🌶️ تاكيز</span> <span>12 ر.س</span></div>
+    <div class="card"><span>🍜 نودلز كوري</span> <span>10 ر.س</span></div>
+    <div class="card"><span>🍪 بسكويت أولكر</span> <span>2 ر.س</span></div>
+    <div class="card"><span>🥔 ليز شيبس</span> <span>3 ر.س</span></div>
+    <div class="card"><span>🍭 مصاص</span> <span>1 ر.س</span></div>
+
+    <a href="https://wa.me/966553990751btn">تأكيد الطلب عبر واتساب</a>
+</body>
+</html>
