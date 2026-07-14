@@ -1,45 +1,51 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>صرح الغذاء - المتجر الرقمي</title>
-<style>
-    body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; text-align: center; margin: 0; padding: 15px; }
-    .header { background: #2c3e50; color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
-    .category { color: #e67e22; font-size: 22px; margin-top: 25px; border-bottom: 2px solid #e67e22; display: inline-block; }
-    .card { background: white; padding: 15px; margin: 10px auto; width: 90%; max-width: 450px; border-radius: 12px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
-    .btn { display: block; background: #25D366; color: white; padding: 18px; margin: 30px auto; width: 85%; max-width: 320px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 18px; }
-</style>
-<script>
-    // نظام الـ 30 يوم (تاريخ التفعيل اليوم 2026-07-14)
-    window.onload = function() {
-        var startDate = new Date("2026-07-14");
-        var today = new Date();
-        if ((today - startDate) / (1000 * 60 * 60 * 24) > 30) {
-            document.body.innerHTML = "<h1 style='padding:50px;'>عذراً، انتهى اشتراك المتجر. يرجى التواصل مع الإدارة للتجديد.</h1>";
-        }
-    };
-</script>
+    <meta charset="UTF-8">
+    <title>صرح الغذاء - المتجر الرقمي</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
+        .card { background: white; padding: 15px; margin: 10px auto; width: 90%; max-width: 400px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn-add { background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .btn-order { background: #25D366; color: white; padding: 15px; width: 90%; max-width: 400px; border: none; border-radius: 10px; font-size: 18px; margin-top: 20px; cursor: pointer; }
+    </style>
 </head>
 <body>
-    <div class="header"><h1>🛒 صرح الغذاء</h1></div>
-    
-    <div class="category">المشروبات</div>
-    <div class="card"><span>🥛 حليب طازج</span> <span>4 ر.س</span></div>
-    <div class="card"><span>🍷 فيمتو</span> <span>5 ر.س</span></div>
-    <div class="card"><span>🧊 آيس تي</span> <span>4 ر.س</span></div>
-    <div class="card"><span>🥤 عصير برتقال</span> <span>6 ر.س</span></div>
-    <div class="card"><span>💧 مياه معدنية</span> <span>1 ر.س</span></div>
+    <h1>🛒 تموينات صرح الغذاء</h1>
+    <div id="products">
+        <!-- المشروبات -->
+        <div class="card"><span>فيمتو</span> <button class="btn-add" onclick="addToCart('فيمتو', 5)">إضافة</button></div>
+        <div class="card"><span>آيس تي</span> <button class="btn-add" onclick="addToCart('آيس تي', 4)">إضافة</button></div>
+        <div class="card"><span>كوكاكولا</span> <button class="btn-add" onclick="addToCart('كوكاكولا', 3)">إضافة</button></div>
+        <!-- السناك -->
+        <div class="card"><span>نودلز كوري</span> <button class="btn-add" onclick="addToCart('نودلز كوري', 10)">إضافة</button></div>
+        <div class="card"><span>بطاطس ليز</span> <button class="btn-add" onclick="addToCart('بطاطس ليز', 2)">إضافة</button></div>
+        <div class="card"><span>بسكويت أوريو</span> <button class="btn-add" onclick="addToCart('بسكويت أوريو', 3)">إضافة</button></div>
+        <!-- أساسيات -->
+        <div class="card"><span>حليب مراعي</span> <button class="btn-add" onclick="addToCart('حليب مراعي', 6)">إضافة</button></div>
+        <div class="card"><span>خبز</span> <button class="btn-add" onclick="addToCart('خبز', 2)">إضافة</button></div>
+    </div>
 
-    <div class="category">السناكات والحلويات</div>
-    <div class="card"><span>🍫 سنيكرز</span> <span>3 ر.س</span></div>
-    <div class="card"><span>🌶️ تاكيز</span> <span>12 ر.س</span></div>
-    <div class="card"><span>🍜 نودلز كوري</span> <span>10 ر.س</span></div>
-    <div class="card"><span>🍪 بسكويت أولكر</span> <span>2 ر.س</span></div>
-    <div class="card"><span>🥔 ليز شيبس</span> <span>3 ر.س</span></div>
-    <div class="card"><span>🍭 مصاص</span> <span>1 ر.س</span></div>
+    <button class="btn-order" onclick="sendOrder()">تأكيد الطلب وإرسال واتساب</button>
 
-    <a href="https://wa.me/966553990751btn">تأكيد الطلب عبر واتساب</a>
+    <script>
+        let cart = [];
+        function addToCart(name, price) {
+            cart.push({name, price});
+            alert("تمت إضافة " + name + " للسلة!");
+        }
+        function sendOrder() {
+            if (cart.length === 0) { alert("السلة فارغة!"); return; }
+            let message = "طلب جديد من صرح الغذاء:%0A";
+            let total = 0;
+            cart.forEach(item => {
+                message += "- " + item.name + " (" + item.price + " ر.س)%0A";
+                total += item.price;
+            });
+            message += "%0Aالمجموع: " + total + " ر.س";
+            // ضع رقم جوالك هنا بدلاً من 966553990751
+            window.location.href = "https://wa.me/966XXXXXXXXXX?text=" + message;
+        }
+    </script>
 </body>
 </html>
