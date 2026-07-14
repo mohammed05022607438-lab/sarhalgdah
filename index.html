@@ -5,48 +5,46 @@
     <title>صرح الغذاء - المتجر الرقمي</title>
     <style>
         body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
-        .card { background: white; padding: 15px; margin: 10px auto; width: 90%; max-width: 400px; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .product-img { width: 50px; height: 50px; border-radius: 5px; }
+        .card { background: white; padding: 15px; margin: 10px auto; width: 90%; max-width: 400px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .btn-add { background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
-        .total-box { font-size: 20px; font-weight: bold; margin: 20px; color: #333; }
-        .btn-order { background: #25D366; color: white; padding: 15px; width: 90%; max-width: 400px; border: none; border-radius: 10px; font-size: 18px; cursor: pointer; }
+        .btn-order { background: #25D366; color: white; padding: 15px; width: 90%; max-width: 400px; border: none; border-radius: 10px; font-size: 18px; margin-top: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
     <h1>🛒 تموينات صرح الغذاء</h1>
-    
     <div id="products">
-        <!-- مثال لمنتج مع صورته وسعره -->
-        <div class="card">
-            <img src="https://via.placeholder.com/50" class="product-img">
-            <span>فيمتو - 5 ر.س</span>
-            <button class="btn-add" onclick="addToCart('فيمتو', 5)">إضافة</button>
-        </div>
-        <div class="card">
-            <img src="https://via.placeholder.com/50" class="product-img">
-            <span>آيس تي - 4 ر.س</span>
-            <button class="btn-add" onclick="addToCart('آيس تي', 4)">إضافة</button>
-        </div>
+        <!-- المشروبات -->
+        <div class="card"><span>فيمتو</span> <button class="btn-add" onclick="addToCart('فيمتو', 5)">إضافة</button></div>
+        <div class="card"><span>آيس تي</span> <button class="btn-add" onclick="addToCart('آيس تي', 4)">إضافة</button></div>
+        <div class="card"><span>كوكاكولا</span> <button class="btn-add" onclick="addToCart('كوكاكولا', 3)">إضافة</button></div>
+        <!-- السناك -->
+        <div class="card"><span>نودلز كوري</span> <button class="btn-add" onclick="addToCart('نودلز كوري', 10)">إضافة</button></div>
+        <div class="card"><span>بطاطس ليز</span> <button class="btn-add" onclick="addToCart('بطاطس ليز', 2)">إضافة</button></div>
+        <div class="card"><span>بسكويت أوريو</span> <button class="btn-add" onclick="addToCart('بسكويت أوريو', 3)">إضافة</button></div>
+        <!-- أساسيات -->
+        <div class="card"><span>حليب مراعي</span> <button class="btn-add" onclick="addToCart('حليب مراعي', 6)">إضافة</button></div>
+        <div class="card"><span>خبز</span> <button class="btn-add" onclick="addToCart('خبز', 2)">إضافة</button></div>
     </div>
 
-    <div class="total-box">المجموع: <span id="total-price">0</span> ر.س</div>
     <button class="btn-order" onclick="sendOrder()">تأكيد الطلب وإرسال واتساب</button>
 
     <script>
         let cart = [];
-        let total = 0;
         function addToCart(name, price) {
             cart.push({name, price});
-            total += price;
-            document.getElementById('total-price').innerText = total;
             alert("تمت إضافة " + name + " للسلة!");
         }
         function sendOrder() {
             if (cart.length === 0) { alert("السلة فارغة!"); return; }
             let message = "طلب جديد من صرح الغذاء:%0A";
-            cart.forEach(item => { message += "- " + item.name + " (" + item.price + " ر.س)%0A"; });
+            let total = 0;
+            cart.forEach(item => {
+                message += "- " + item.name + " (" + item.price + " ر.س)%0A";
+                total += item.price;
+            });
             message += "%0Aالمجموع: " + total + " ر.س";
-            window.location.href = "https://wa.me/966553990751 message;
+            // ضع رقم جوالك هنا بدلاً من 966553990751
+            window.location.href = "https://wa.me/966XXXXXXXXXX?text=" + message;
         }
     </script>
 </body>
