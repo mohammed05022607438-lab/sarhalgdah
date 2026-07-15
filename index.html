@@ -2,7 +2,7 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>متجر صرح الغذاء</title>
+    <title>صرح الغذاء</title>
     <style>
         body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
         .card { background: white; padding: 15px; margin: 10px auto; width: 90%; max-width: 400px; border-radius: 8px; border: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
@@ -18,15 +18,17 @@
         <div class="card"><span>نودلز كوري - 10 ر.س</span> <button class="btn-add" onclick="add('نودلز كوري', 10)">إضافة</button></div>
     </div>
     <h3>المجموع: <span id="total">0</span> ر.س</h3>
-    <button class="btn-order" onclick="send()">تأكيد الطلب واتساب</button>
+    <button class="btn-order" onclick="send()">إتمام الطلب عبر واتساب</button>
 
     <script>
         let cart = [], total = 0;
         function add(n, p) { cart.push({n, p}); total += p; document.getElementById('total').innerText = total; }
         function send() {
             if(cart.length == 0) return alert("السلة فارغة");
+            // غير هذا الرقم إلى رقم جوالك الحقيقي
+            let phone = "966553990751
             let msg = "طلب جديد من صرح الغذاء:%0A" + cart.map(i => i.n + " (" + i.p + " ر.س)").join("%0A") + "%0Aالمجموع: " + total + " ر.س";
-            window.location.href = "https://wa.me/966553990751 msg;
+            window.location.href = "https://wa.me/" + phone + "?text=" + msg;
         }
     </script>
 </body>
