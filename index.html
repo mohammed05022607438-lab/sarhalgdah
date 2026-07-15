@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صرح الغذاء</title>
     <style>
-        :root { --primary: #27ae60; --bg: #f8f9fa; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding-bottom: 80px; }
+        :root { --primary: #27ae60; --danger: #e74c3c; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; }
         header { background: white; padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .search-container { padding: 15px; position: sticky; top: 0; background: var(--bg); z-index: 100; }
         input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 25px; outline: none; box-sizing: border-box; text-align: center; }
         .product-list { display: grid; gap: 10px; padding: 10px; }
         .card { background: white; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .btn-add { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .actions { display: flex; gap: 5px; }
+        .btn-add { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; }
+        .btn-del { background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 20px; cursor: pointer; }
         .cart-bar { position: fixed; bottom: 0; width: 100%; background: white; padding: 15px; border-top: 2px solid #eee; display: flex; justify-content: space-around; align-items: center; }
         .total-price { font-size: 1.2em; font-weight: bold; color: var(--primary); }
         .btn-order { background: #25D366; color: white; padding: 10px 25px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; }
@@ -20,12 +22,10 @@
 </head>
 <body>
 
-<header>
-    <h1>صرح الغذاء 🛒</h1>
-</header>
+<header><h1>صرح الغذاء 🛒</h1></header>
 
 <div class="search-container">
-    <input type="text" id="search" oninput="filter()" placeholder="🔍 ابحث عن منتج (مثال: بيبسي، ليز، ماء)...">
+    <input type="text" id="search" oninput="filter()" placeholder="🔍 ابحث عن منتج...">
 </div>
 
 <div class="product-list" id="products"></div>
@@ -36,41 +36,43 @@
 </div>
 
 <script>
-    // قائمة موسعة للمنتجات
     const items = [
-        {n: "بيبسي علبة", p: 3}, {n: "كوكاكولا علبة", p: 3}, {n: "سفن أب", p: 3}, {n: "ميرندا حمضيات", p: 3},
-        {n: "ماء نوفا صغير", p: 1}, {n: "ماء أروى كبير", p: 2}, {n: "آيس تي خوخ", p: 4}, {n: "حليب السعودية صغير", p: 2},
-        {n: "ليز حار نار", p: 7}, {n: "ليز ملح", p: 7}, {n: "دوريتوس جبن", p: 7}, {n: "شيتوس حار", p: 5},
-        {n: "نودلز بولداك", p: 10}, {n: "نودلز إندومي خضار", p: 3}, {n: "بسكويت أوريو", p: 4}, {n: "جالكسي سادة", p: 5},
-        {n: "كيت كات", p: 3}, {n: "بسكويت ماري", p: 5}, {n: "تونة قودي", p: 8}, {n: "فول حدائق كاليفورنيا", p: 4},
-        {n: "جبن كرافت", p: 12}, {n: "خبز أبيض", p: 2}, {n: "زبادي نادك", p: 2}, {n: "عصير الربيع", p: 2}
+        {n: "بيبسي علبة", p: 3}, {n: "كوكاكولا", p: 3}, {n: "ماء نوفا", p: 1},
+        {n: "ليز حار نار", p: 7}, {n: "دوريتوس", p: 7}, {n: "إندومي", p: 3}
     ];
 
     function load() {
         let list = document.getElementById("products");
-        items.forEach(item => {
-            list.innerHTML += `<div class="card">
-                <span>${item.n} <br><small style="color:#888">${item.p} ر.س</small></span>
-                <button class="btn-add" onclick="add('${item.n}', ${item.p})">إضافة</button>
+        items.forEach((item, index) => {
+            list.innerHTML += `<div class="card" id="p-${index}">
+                <span>${item.n} <br><small>${item.p} ر.س</small></span>
+                <div class="actions">
+                    <button class="btn-del" onclick="remove('${item.n}', ${item.p})">إلغاء</button>
+                    <button class="btn-add" onclick="add('${item.n}', ${item.p})">إضافة</button>
+                </div>
             </div>`;
         });
     }
+
+    let cart = [], total = 0;
+    function add(n, p) { cart.push({n, p}); total += p; update(); }
     
-    function filter() {
-        let val = document.getElementById("search").value.toLowerCase();
-        let cards = document.getElementsByClassName("card");
-        for(let i=0; i<cards.length; i++) {
-            let text = cards[i].innerText.toLowerCase();
-            // تصحيح إملائي بسيط: إذا كتب 'لز' يفهمها 'ليز'
-            let match = text.includes(val) || (val.includes("لز") && text.includes("ليز"));
-            cards[i].style.display = match ? "" : "none";
+    function remove(n, p) {
+        let index = cart.findIndex(i => i.n === n);
+        if(index > -1) {
+            cart.splice(index, 1);
+            total -= p;
+            update();
         }
     }
 
-    let cart = [], total = 0;
-    function add(n, p) { 
-        cart.push({n, p}); total += p; 
-        document.getElementById("total").innerText = total; 
+    function update() { document.getElementById("total").innerText = total; }
+
+    function filter() {
+        let val = document.getElementById("search").value.toLowerCase();
+        document.querySelectorAll('.card').forEach(c => {
+            c.style.display = c.innerText.toLowerCase().includes(val) || (val === "لز" && c.innerText.includes("ليز")) ? "" : "none";
+        });
     }
 
     function send() {
@@ -78,7 +80,7 @@
         let counts = {};
         cart.forEach(i => { counts[i.n] = (counts[i.n] || 0) + 1; });
         let msg = "طلب جديد من صرح الغذاء:%0A";
-        for (let n in counts) msg += `• ${n} ${counts[n] > 1 ? '('+counts[n]+')' : ''}%0A`;
+        for (let n in counts) msg += `• ${n} (${counts[n]})%0A`;
         window.location.href = "https://wa.me/966553990751?text=" + msg + "%0Aالمجموع الكلي: " + total + " ر.س";
     }
     load();
