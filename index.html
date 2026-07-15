@@ -2,33 +2,317 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>صرح الغذاء</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تموينات صرح الغذاء</title>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
-        .card { background: white; padding: 15px; margin: 10px auto; width: 90%; max-width: 400px; border-radius: 8px; border: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
-        .btn-add { background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
-        .btn-order { background: #25D366; color: white; padding: 15px; width: 90%; max-width: 400px; border: none; border-radius: 8px; font-size: 18px; margin-top: 20px; cursor: pointer; }
+        /* المتغيرات الأساسية للألوان */
+        :root {
+            --primary-color: #2c3e50; /* لون داكن وفخم للنصوص الرئيسية */
+            --accent-color: #27ae60;  /* لون أخضر زاهي للأزرار والعناصر */
+            --bg-color: #f9f9f9;      /* لون خلفية فاتح ومريح */
+            --card-bg: #ffffff;       /* لون خلفية البطاقات */
+            --text-secondary: #7f8c8d; /* لون ثانوي للنصوص الفرعية */
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif; /* خط عربي جميل وواضح */
+            text-align: center;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: var(--primary-color);
+        }
+
+        /* ترويسة المتجر */
+        header {
+            background-color: var(--card-bg);
+            padding: 30px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+            color: var(--primary-color);
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* رسالة الترحيب */
+        .welcome-msg {
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            padding: 20px;
+            background-color: #fff3cd; /* لون خلفية مميز لرسالة الترحيب */
+            border-right: 5px solid #ffc107;
+            border-radius: 8px;
+            color: #856404;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        /* قائمة المنتجات */
+        #products {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: right;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .card-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .btn-add {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-add:hover {
+            background-color: #219150;
+        }
+
+        /* ملخص الطلب */
+        .order-summary {
+            background-color: var(--card-bg);
+            padding: 25px;
+            width: 90%;
+            max-width: 450px;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .order-summary h3 {
+            margin: 0 0 15px 0;
+            font-size: 22px;
+        }
+
+        #total {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        /* زر إتمام الطلب */
+        .btn-order {
+            background-color: #007bff; /* لون أزرق مميز */
+            color: white;
+            padding: 20px;
+            width: 90%;
+            max-width: 450px;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,123,255,0.2);
+            transition: transform 0.1s ease;
+        }
+
+        .btn-order:active {
+            transform: scale(0.98); /* تأثير ضغطة الزر */
+        }
+
+        /* تذييل الصفحة */
+        footer {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 14px;
+        }
+        
+        footer p {
+            margin: 0;
+        }
+
+        /* استجابة الشاشة */
+        @media (max-width: 500px) {
+            header h1 { font-size: 28px; }
+            .card { padding: 15px; }
+            .card-title { font-size: 18px; }
+            .btn-order { padding: 15px; font-size: 18px; }
+        }
     </style>
+    <!-- إضافة خط "Tajawal" من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>🛒 تموينات صرح الغذاء</h1>
-    <div id="products">
-        <div class="card"><span>فيمتو - 5 ر.س</span> <button class="btn-add" onclick="add('فيمتو', 5)">إضافة</button></div>
-        <div class="card"><span>آيس تي - 4 ر.س</span> <button class="btn-add" onclick="add('آيس تي', 4)">إضافة</button></div>
-        <div class="card"><span>نودلز كوري - 10 ر.س</span> <button class="btn-add" onclick="add('نودلز كوري', 10)">إضافة</button></div>
-    </div>
-    <h3>المجموع: <span id="total">0</span> ر.س</h3>
-    <button class="btn-order" onclick="send()">إتمام الطلب عبر واتساب</button>
+    
+    <!-- الترويسة -->
+    <header>
+        <h1>صرح الغذاء</h1>
+        <p>وجهتك الأولى للمقاضي اليومية والمنتجات الطازجة</p>
+    </header>
 
+    <!-- رسالة ترحيبية جميلة -->
+    <div class="welcome-msg">
+        أهلاً بك يا غالي! تفضل بتصفح منتجاتنا المختارة بعناية واطلبها فوراً عبر الواتساب.
+    </div>
+
+    <!-- قائمة المنتجات -->
+    <div id="products">
+        <!-- منتج 1 -->
+        <div class="card">
+            <div class="card-info">
+                <span class="card-title">فيمتو - أصلي</span>
+                <span class="card-desc">العبوة الكلاسيكية المنعشة (710 مل)</span>
+                <span class="card-price">5 ر.س</span>
+            </div>
+            <button class="btn-add" onclick="add('فيمتو - أصلي', 5)">إضافة للسلة</button>
+        </div>
+
+        <!-- منتج 2 -->
+        <div class="card">
+            <div class="card-info">
+                <span class="card-title">ليبتون - آيس تي خوخ</span>
+                <span class="card-desc">مشروب الشاي المثلج المنعش (320 مل)</span>
+                <span class="card-price">4 ر.س</span>
+            </div>
+            <button class="btn-add" onclick="add('ليبتون - آيس تي خوخ', 4)">إضافة للسلة</button>
+        </div>
+
+        <!-- منتج 3 -->
+        <div class="card">
+            <div class="card-info">
+                <span class="card-title">نودلز كوري - بولداك</span>
+                <span class="card-desc">نودلز حارة جداً وغنية بالنكهة (عبوة واحدة)</span>
+                <span class="card-price">10 ر.س</span>
+            </div>
+            <button class="btn-add" onclick="add('نودلز كوري - بولداك', 10)">إضافة للسلة</button>
+        </div>
+
+        <!-- منتج 4 -->
+        <div class="card">
+            <div class="card-info">
+                <span class="card-title">شيبس ليز - حار نار</span>
+                <span class="card-desc">النكهة النارية المفضلة للجميع (كبير)</span>
+                <span class="card-price">7 ر.س</span>
+            </div>
+            <button class="btn-add" onclick="add('شيبس ليز - حار نار', 7)">إضافة للسلة</button>
+        </div>
+
+        <!-- منتج 5 -->
+        <div class="card">
+            <div class="card-info">
+                <span class="card-title">ماء نوفا - صغير</span>
+                <span class="card-desc">كرتون كامل (40 عبوة × 330 مل)</span>
+                <span class="card-price">22 ر.س</span>
+            </div>
+            <button class="btn-add" onclick="add('ماء نوفا - صغير (كرتون)', 22)">إضافة للسلة</button>
+        </div>
+    </div>
+
+    <!-- ملخص الطلب -->
+    <div class="order-summary">
+        <h3>ملخص الطلب</h3>
+        <p>المجموع الكلي: <span id="total">0</span> ر.س</p>
+    </div>
+
+    <!-- زر إتمام الطلب -->
+    <button class="btn-order" onclick="send()">تأكيد الطلب عبر واتساب</button>
+
+    <!-- التذييل -->
+    <footer>
+        <p>© 2024 جميع الحقوق محفوظة - تموينات صرح الغذاء</p>
+        <p>خدمة سريعة وموثوقة</p>
+    </footer>
+
+    <!-- الأوامر البرمجية (JS) -->
     <script>
-        let cart = [], total = 0;
-        function add(n, p) { cart.push({n, p}); total += p; document.getElementById('total').innerText = total; }
+        let cart = []; // مصفوفة لحفظ المنتجات المضافة
+        let total = 0; // المتغير لحفظ المجموع
+
+        // دالة لإضافة منتج للسلة
+        function add(productName, price) {
+            cart.push({ name: productName, price: price }); // إضافة المنتج للمصفوفة
+            total += price; // إضافة السعر للمجموع
+            document.getElementById('total').innerText = total; // تحديث واجهة المستخدم بقيمة المجموع الجديدة
+            
+            // تأثير بصري بسيط عند الإضافة (اختياري)
+            let btn = event.target;
+            btn.innerText = 'تمت الإضافة!';
+            btn.style.backgroundColor = '#a29bfe';
+            setTimeout(() => {
+                btn.innerText = 'إضافة للسلة';
+                btn.style.backgroundColor = ''; // يعيد اللون الأصلي
+            }, 800);
+        }
+
+        // دالة لإرسال الطلب للواتساب
         function send() {
-            if(cart.length == 0) return alert("السلة فارغة");
-            // غير هذا الرقم إلى رقم جوالك الحقيقي
-            let phone = "966553990751
-            let msg = "طلب جديد من صرح الغذاء:%0A" + cart.map(i => i.n + " (" + i.p + " ر.س)").join("%0A") + "%0Aالمجموع: " + total + " ر.س";
-            window.location.href = "https://wa.me/" + phone + "?text=" + msg;
+            if (cart.length === 0) { // التحقق إذا كانت السلة فارغة
+                alert("السلة فارغة! أضف بعض المنتجات أولاً.");
+                return;
+            }
+            
+            // صياغة رسالة الطلب
+            let message = "طلب جديد من صرح الغذاء:%0A";
+            cart.forEach(item => {
+                message += `- ${item.name}: ${item.price} ر.س%0A`;
+            });
+            message += "%0A" + `المجموع الكلي: ${total} ر.س`;
+            
+            // رقم جوالك هنا (يجب تغييره!)
+            let phone = "966553990751ر الرقم لرقمك الحقيقي
+            
+            // فتح رابط الواتساب
+            window.location.href = `https://wa.me/${phone}?text=${message}`;
         }
     </script>
 </body>
