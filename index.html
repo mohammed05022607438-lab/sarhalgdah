@@ -22,11 +22,10 @@
 
 <header>
     <h1>صرح الغذاء 🛒</h1>
-    <p style="color: #666; margin: 0;">وجهتك الأولى للمقاضي الطازجة</p>
 </header>
 
 <div class="search-container">
-    <input type="text" id="search" oninput="filter()" placeholder="🔍 ابحث عن منتج...">
+    <input type="text" id="search" oninput="filter()" placeholder="🔍 ابحث عن منتج (مثال: بيبسي، ليز، ماء)...">
 </div>
 
 <div class="product-list" id="products"></div>
@@ -37,9 +36,14 @@
 </div>
 
 <script>
+    // قائمة موسعة للمنتجات
     const items = [
-        {n: "ليز حار نار", p: 7}, {n: "آيس تي خوخ", p: 4}, {n: "بيبسي", p: 3},
-        {n: "نودلز بولداك", p: 10}, {n: "ماء نوفا", p: 1}, {n: "جالكسي", p: 5}
+        {n: "بيبسي علبة", p: 3}, {n: "كوكاكولا علبة", p: 3}, {n: "سفن أب", p: 3}, {n: "ميرندا حمضيات", p: 3},
+        {n: "ماء نوفا صغير", p: 1}, {n: "ماء أروى كبير", p: 2}, {n: "آيس تي خوخ", p: 4}, {n: "حليب السعودية صغير", p: 2},
+        {n: "ليز حار نار", p: 7}, {n: "ليز ملح", p: 7}, {n: "دوريتوس جبن", p: 7}, {n: "شيتوس حار", p: 5},
+        {n: "نودلز بولداك", p: 10}, {n: "نودلز إندومي خضار", p: 3}, {n: "بسكويت أوريو", p: 4}, {n: "جالكسي سادة", p: 5},
+        {n: "كيت كات", p: 3}, {n: "بسكويت ماري", p: 5}, {n: "تونة قودي", p: 8}, {n: "فول حدائق كاليفورنيا", p: 4},
+        {n: "جبن كرافت", p: 12}, {n: "خبز أبيض", p: 2}, {n: "زبادي نادك", p: 2}, {n: "عصير الربيع", p: 2}
     ];
 
     function load() {
@@ -57,7 +61,8 @@
         let cards = document.getElementsByClassName("card");
         for(let i=0; i<cards.length; i++) {
             let text = cards[i].innerText.toLowerCase();
-            let match = text.includes(val) || (val === "لز" && text.includes("ليز"));
+            // تصحيح إملائي بسيط: إذا كتب 'لز' يفهمها 'ليز'
+            let match = text.includes(val) || (val.includes("لز") && text.includes("ليز"));
             cards[i].style.display = match ? "" : "none";
         }
     }
