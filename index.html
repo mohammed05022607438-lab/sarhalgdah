@@ -2,31 +2,41 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>متجر صرح الغذاء</title>
+    <title>صرح الغذاء</title>
     <style>
         body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 10px; }
-        input { width: 90%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc; }
+        input { width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; }
         .card { background: white; padding: 10px; margin: 5px auto; width: 95%; max-width: 400px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
         .btn-add { background: #27ae60; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-        .btn-order { background: #25D366; color: white; padding: 15px; width: 100%; border: none; border-radius: 8px; font-size: 18px; margin-top: 20px; cursor: pointer; }
+        .btn-order { background: #25D366; color: white; padding: 15px; width: 95%; max-width: 400px; border: none; border-radius: 8px; font-size: 18px; margin-top: 20px; cursor: pointer; }
+        #adminPanel { display: none; background: #fff3cd; padding: 15px; border: 2px solid #ffc107; margin: 20px auto; width: 90%; max-width: 400px; border-radius: 8px; }
     </style>
 </head>
 <body>
     <h1>🛒 صرح الغذاء</h1>
-    <input type="text" id="search" onkeyup="filter()" placeholder="ابحث عن منتج...">
+    <input type="text" id="search" oninput="filter()" placeholder="ابحث عن منتج...">
     <div id="products"></div>
     <h3>المجموع: <span id="total">0</span> ر.س</h3>
     <button class="btn-order" onclick="send()">إتمام الطلب عبر واتساب</button>
+    <br><br>
+    <button onclick="showAdmin()">🛠 لوحة الإدارة</button>
+
+    <div id="adminPanel">
+        <h3>دخول المدير</h3>
+        <input type="password" id="pass" placeholder="كلمة السر">
+        <button onclick="login()">دخول</button>
+        <p id="adminMsg" style="display:none; color:green;">أنت الآن في وضع التعديل (يمكنك تغيير مصفوفة items في الكود).</p>
+    </div>
 
     <script>
-        // يمكنك إضافة الـ 400 منتج هنا بنفس النمط
-        const items = [
+        let items = [
             {n: "ليز حار نار", p: 7}, {n: "آيس تي خوخ", p: 4}, {n: "بيبسي", p: 3},
-            {n: "نودلز بولداك", p: 10}, {n: "ماء نوفا", p: 1}, {n: "شوكولاتة جالكسي", p: 5}
+            {n: "نودلز بولداك", p: 10}, {n: "ماء نوفا", p: 1}, {n: "جالكسي", p: 5}
         ];
 
         function load() {
             let list = document.getElementById("products");
+            list.innerHTML = "";
             items.forEach(item => {
                 list.innerHTML += `<div class="card"><span>${item.n} - ${item.p} ر.س</span> <button class="btn-add" onclick="add('${item.n}', ${item.p})">إضافة</button></div>`;
             });
@@ -36,7 +46,9 @@
             let val = document.getElementById("search").value.toLowerCase();
             let cards = document.getElementsByClassName("card");
             for(let i=0; i<cards.length; i++) {
-                cards[i].style.display = cards[i].innerText.toLowerCase().includes(val) ? "" : "none";
+                let text = cards[i].innerText.toLowerCase();
+                let match = text.includes(val) || (val === "لز" && text.includes("ليز"));
+                cards[i].style.display = match ? "" : "none";
             }
         }
 
@@ -44,13 +56,21 @@
         function add(n, p) { cart.push({n, p}); total += p; document.getElementById("total").innerText = total; }
 
         function send() {
+            if(cart.length == 0) return alert("السلة فارغة!");
             let counts = {};
             cart.forEach(i => { counts[i.n] = (counts[i.n] || 0) + 1; });
             let msg = "طلب جديد من صرح الغذاء:%0A";
             for (let n in counts) msg += `- ${n} ${counts[n] > 1 ? '('+counts[n]+')' : ''}%0A`;
-            window.location.href = "https://wa.me/966553990751 msg + "%0Aالمجموع: " + total + " ر.س";
+            window.location.href = "https://wa.me/966553990751?text=" + msg + "%0Aالمجموع الكلي: " + total + " ر.س";
+        }
+
+        function showAdmin() { document.getElementById("adminPanel").style.display = "block"; }
+        function login() {
+            if(document.getElementById("pass").value == "123") {
+                document.getElementById("adminMsg").style.display = "block";
+            } else { alert("كلمة السر خاطئة"); }
         }
         load();
     </script>
 </body>
-</html>>
+</html>
